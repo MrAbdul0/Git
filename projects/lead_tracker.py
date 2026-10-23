@@ -27,5 +27,9 @@ while True:
         print('Lead added successfully!')
     elif user_input.lower() == 'no':
         break
+    else:
+        print('Please type yes or no.')
+        break
     
 list_of_leads(leads)
+
