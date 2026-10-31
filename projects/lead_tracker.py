@@ -1,14 +1,27 @@
 def list_of_leads(leads):
-    for lead in leads:
-        name = lead[0]
-        product = lead[1]
-        last_contact = lead[2]
-        if last_contact <= 2:
-            print(f'{name} is interested in buying {product}. Last contacted is {last_contact} days ago, we wait!')
-        elif last_contact <= 5:
-            print(f'{name} is interested in buying {product}. Last contacted is {last_contact} days ago, send a reminder message!')
-        elif last_contact >= 6:
-            print(f'{name} is interested in buying {product}. Last contacted is {last_contact} days ago, Call now!')
+    while True:
+        name = input("Enter the name of the lead you want to view (or 'q' to quit):")
+        if name == 'q':
+            break
+
+        found = False
+        for lead in leads:
+            if name.lower() == lead[0].lower():
+                found = True
+                product = lead[1]
+                last_contact = lead[2]
+            
+                if last_contact <= 2:
+                    print(f'{name} is interested in buying {product}. Last contacted is {last_contact} days ago, we wait!')
+                elif last_contact <= 5:
+                    print(f'{name} is interested in buying {product}. Last contacted is {last_contact} days ago, send a reminder message!')
+                elif last_contact >= 6:
+                    print(f'{name} is interested in buying {product}. Last contacted is {last_contact} days ago, Call now!')
+               
+
+        if not found:
+            print('Name not on list')
+        
 
 leads = [
     ['David', 'Shoes', 1],
@@ -16,6 +29,8 @@ leads = [
     ['Aisha', 'Bags', 5],
     ['Michael', 'Watches', 7]
 ]
+
+list_of_leads(leads)
 
 while True:
     user_input = input('Do you want to add a new lead? (yes/no):')
@@ -29,7 +44,6 @@ while True:
         break
     else:
         print('Please type yes or no.')
-        break
+        
     
-list_of_leads(leads)
 
