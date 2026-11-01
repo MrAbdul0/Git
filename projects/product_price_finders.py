@@ -32,6 +32,6 @@ while True:
         break
     else:
         print("Please type y or n")
-        break
+        
 
 
