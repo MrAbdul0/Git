@@ -58,6 +58,9 @@ class User:
         self.date_of_birth = date_of_birth
         self.account = BankActivity('My Bank', 0)
 
+    def __str__(self):
+        return f"{self.first_name} {self.last_name} (@{self.username})"
+
 class Bank:
     def __init__(self):
         self._users = {}
