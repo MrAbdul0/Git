@@ -77,9 +77,6 @@ class Bank:
     def login(self, username):
         return self._users.get(username.strip().lower())
 
-    def __str__(self):
-        return f"{self.first_name} {self.last_name} (@{self.username})"
-
     def start(self):
         while True:
             choice = input('1. Register  2. Login  3. Quit:')
