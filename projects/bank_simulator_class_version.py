@@ -1,3 +1,6 @@
+import re
+from datetime import datetime
+
 class BankActivity:
     def __init__(self, bank_name, account_balance):
         self.bank_name = bank_name
@@ -44,6 +47,74 @@ class BankActivity:
             else:
                 print('Enter choice 1, 2, 3, 4')
 
-user_1 = BankActivity('Abdulhaqq Sani Chonoko', 5000000)
-user_1.run_menu()
+
+class User:
+    def __init__(self, first_name, last_name, username, email, phone_number, date_of_birth):
+        self.first_name = first_name
+        self.last_name = last_name
+        self.username = username
+        self.email = email
+        self.phone_number = phone_number
+        self.date_of_birth = date_of_birth
+        self.account = BankActivity('My Bank', 0)
+
+class Bank:
+    def __init__(self):
+        self._users = {}
+
+    def register(self, first_name, last_name, username, email, phone_number, date_of_birth):
+        user = User(first_name, last_name, username, email, phone_number, date_of_birth)
+        if user.username in self._users:
+            raise ValueError('Username already exist')
+        if any(u.email == user.email for u in self._users.values()):
+            raise ValueError('Email already exist')
+        self._users[username] = user
+        return user
+
+    def login(self, username):
+        return self._users.get(username.strip().lower())
+
+    def __str__(self):
+        return f"{self.first_name} {self.last_name} (@{self.username})"
+
+    def start(self):
+        while True:
+            choice = input('1. Register  2. Login  3. Quit:')
+            if choice == '1':
+                try:
+                    user = self.register(
+                        input('first name:'),
+                        input('last name:'),
+                        input('username:'),
+                        input('email:'),
+                        input('phone_number:'),
+                        input('date_of_birth (YYYY-MM-DD):')
+                    )
+                    print(f'Registered {user.first_name}: you can now login')
+                except ValueError as e:
+                    print(f'Error: {e}')
+
+            elif choice == '2':
+                user = self.login(input('Enter username:'))
+                if user is None:
+                    print('User not found. please register first')
+                    continue
+                print(f'welcome: {user.first_name}')
+                user.account.run_menu()
+
+            elif choice == '3':
+                break
+
+bank = Bank()
+bank.start()
+
+
+
+
+
+            
+
+   
+
+
     
