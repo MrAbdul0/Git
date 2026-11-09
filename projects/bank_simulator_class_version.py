@@ -13,9 +13,9 @@ class BankActivity:
         if withdraw_amount > self.account_balance:
             return 'Withdrawal declined due to insufficient balance'   
                    
-        if withdraw_amount <= self.account_balance:
-            self.account_balance -= withdraw_amount
-            return f'Withdrawal of {withdraw_amount} has been initiated, new balance is {self.account_balance}'
+        
+        self.account_balance -= withdraw_amount
+        return f'Withdrawal of {withdraw_amount} has been initiated, new balance is {self.account_balance}'
 
     def deposit(self, deposit_amount):
         if deposit_amount <= 0:
@@ -66,6 +66,7 @@ class Bank:
         self._users = {}
 
     def register(self, first_name, last_name, username, email, phone_number, date_of_birth):
+        username = username.strip().lower()
         user = User(first_name, last_name, username, email, phone_number, date_of_birth)
         if user.username in self._users:
             raise ValueError('Username already exist')
