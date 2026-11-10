@@ -42,7 +42,7 @@ class ProductFinder:
         if product_name not in self._catalogue:
             raise ValueError("Product not found, please choose option '1' to add product")
         price = self._catalogue[product_name] 
-        return price
+        return f'The price of {product_name} is: {price}'
 
     def update_price(self, product_name, new_price):
         product_name = product_name.strip().lower()
@@ -72,13 +72,13 @@ class ProductFinder:
             raise ValueError("Product not found, please choose option '1' to add product")
         del self._catalogue[product_name]
         self.save_catalogue()
-        return f"Product {product_name} has been deleted successfully"
+        return f"1 item({product_name}) has been deleted successfully"
         
     def view_all_price(self):
         if not self._catalogue:
             raise ValueError('Catalogue cannot be empty')
         for product_name, product_price in sorted(self._catalogue.items(), key=lambda item: item[1], reverse=True):
-            print(product_name, product_price)
+            print(f"{product_name}: {product_price}")
 
     def partial_search(self, keyword):
         keyword = keyword.strip().lower()
@@ -95,7 +95,7 @@ class ProductFinder:
 finder = ProductFinder()
 
 while True:
-    choice =input('1. Add product  2. Search price  3. Update price  4. Delete product  5. view_all_price  6. Partial search  7.Quit:')
+    choice =input('1. Add product  2. Search price  3. Update price  4. Delete product  5. view_all_price  6. Partial search  7.Quit: ')
     if choice == '1':
         try:
             product_name = input('Enter product name: ')
