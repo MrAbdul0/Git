@@ -1,7 +1,9 @@
+
+
 class Lead:
-    def __init__(self, prospect_name, product_name, last_contacted):
-        self.prospect_name = prospect_name
-        self.product_name = product_name
+    def __init__(self, prospect, product, last_contacted):
+        self.prospect = prospect
+        self.product = product
         self.last_contacted = last_contacted
 
     def next_action(self):
@@ -13,43 +15,69 @@ class Lead:
             return 'Call now!'
 
     def __str__(self):
-        return f'{self.prospect_name} is interested in buying {self.product_name}. Last contacted is {self.last_contacted} days ago, {self.next_action()}'
+        return f'{self.prospect} is interested in buying {self.product}. Last contacted is {self.last_contacted} days ago, {self.next_action()}'
 
 class LeadTracker:
     def __init__(self):
         self.leads = []
 
-    def add_lead(self,prospect_name, product_name, last_contacted):
+    def add_lead(self,prospect, product, last_contacted):
+        prospect = prospect.strip().lower()
+        product = product.strip().lower()
+
+        for lead in self.leads:
+            if prospect == lead.prospect and product == lead.product:
+                raise ValueError('Lead with this prospect and product already exists')
+
+        if not prospect or not product:
+            raise ValueError('Prospect or product cannot be empty')
+        
+        
         if last_contacted < 0:
-            return 'Last contacted cannot be a negative number'
-        self.leads.append(Lead(prospect_name, product_name, last_contacted))
+            raise ValueError('Last contacted cannot be a negative number')
+
+        if not isinstance(last_contacted, int):
+            raise ValueError('Last contacted must be an integer')
+        self.leads.append(Lead(prospect, product, last_contacted))
         return 'Lead successfully added'
 
-    def find_lead(self, prospect_name):
+    def find_lead(self, prospect):
+        prospect = prospect.strip().lower()
+
+        if not prospect:
+            raise ValueError('Prospect name cannot be empty')
+        
         for lead in self.leads:
-            if prospect_name.lower() == lead.prospect_name.lower():
-                return lead
-        return None
+            if prospect not in lead.prospect:
+                continue
+            return lead
+        raise ValueError('Prospect not found')
 
     def run_menu(self):
         while True:
             choice = input('1. View lead  2. Add lead  3. Quit:')
             if choice == '1':
-                prospect_name = input('Enter the prospect name you want to view:')
-                lead = self.find_lead(prospect_name)
-                if lead is None:
-                    print('Name not in list')
-                else:
-                    print(lead)
-            elif choice == '2':
-                prospect_name = input('Enter the prospect name you want to add to the lead:')
-                product_name = input('Enter the product name:')
+
                 try:
-                    last_contacted = int(input('Enter the number of days last contacted: '))
-                except ValueError:
-                    print('Enter a number')
-                    continue
-                print(self.add_lead(prospect_name, product_name, last_contacted))
+                    prospect = input('Enter the prospect name you want to view:')
+                    lead = self.find_lead(prospect)
+                    print(lead)
+                except ValueError as e:
+                    print(e)
+
+            elif choice == '2':
+                try:
+                    prospect = input('Enter the prospect name you want to add to the lead:')
+                    product = input('Enter the product name:')
+                    try:
+                        last_contacted = int(input('Enter the number of days last contacted: '))
+                    except ValueError:
+                        print('Last contacted must be an integer')
+                        continue
+                    print(self.add_lead(prospect, product, last_contacted))
+                except ValueError as e:
+                    print(e)
+                                   
             elif choice == '3':
                 break
             else:
